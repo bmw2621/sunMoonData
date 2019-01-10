@@ -7,16 +7,16 @@ import pandas as pd
 from os import system as sys
 
 def getDateRange():
+    """getDateRange function requests user input for start and end dates and returns a list of datetime objects to be used
+    as parameters for future scraping operations"""
+    
     print('')
     print('')
     startDate = input("What is the start date? Ex. 2018-12-25      ").replace("-",",")
     print('')
     print('')
     endDate   = input("What is the end date? Ex. 2018-12-25        ").replace("-",",")
-
-##    startDate = '2019-01-01'
-##    endDate = '2019-01-31'
-    
+   
     startYear = int(startDate[:4])
     startMonth = int(startDate[5:7])
     startDay = int(startDate[8:])
@@ -34,6 +34,9 @@ def getDateRange():
 
 
 def scrapeDay(date, city, state):
+    """scrapeDay function receives datetime object for one day, parses date to strings, formats the appropriate url for scraping,
+    scrapes data, generates a dataframe with appropriately formatted data, and returns the dataframe to the sunMoonData function
+    for aggregation"""
 
     year = str(date.year)
     month = str(date.month)
@@ -85,6 +88,9 @@ def scrapeDay(date, city, state):
     return df2
 
 def cleanMoon(df):
+    """cleanMoon function cleans data scraped from Naval Observatory website.  Cleaning is necessary because new, quarters,
+    and full moons are annotated as such rather than a visibility percentage on the Naval Observatory website.  Function
+    checks the preceeding entries to determine the appropriate data to be entered."""
     print('')
     print('')
     print('Cleaning up some funny business...')
@@ -104,6 +110,10 @@ def cleanMoon(df):
 
 
 def sunMoonDate():
+    """sunMoonDate function instantiates a dataframe, requests user input for city and output filename, calls getDateRange 
+    function to get list of datetime objects for scraping operation, calls scrapeDay function to gather data from the Naval
+    Observatory website, calls cleanMoon function to clean data, writes the .csv file to the local directory, and asks
+    user if they want to view the file (default uses LibreOffice, update lines 157-159 to user preference"""
     sys('clear')
 
     df = pd.DataFrame()
@@ -149,8 +159,8 @@ def sunMoonDate():
         sys('localc --view ' +  fN + '.csv')
     sys('clear')
 
-
-sunMoonDate()
+if __name__ == "__main__":
+    sunMoonDate()
 
 
 
